@@ -2,7 +2,7 @@
 
 
 
-/*
+
 var imgs=document.querySelectorAll(".img-fluid")
 var lightboxcontainer=document.getElementById("lightboxcontainer")
 var closeicon=document.getElementById("close")
@@ -32,7 +32,7 @@ lightboxcontainer.style.display="none"
 
 })
  
-*/
+
 
 
 
