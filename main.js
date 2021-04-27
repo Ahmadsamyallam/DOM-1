@@ -3,10 +3,14 @@
 
 
 
-var imgs=document.querySelectorAll(".img-fluid")
+var imgs=Array.from(document.querySelectorAll(".w-100"))
 var lightboxcontainer=document.getElementById("lightboxcontainer")
 var closeicon=document.getElementById("close")
+var nexticon=document.getElementById("next")
+var previcon=document.getElementById("prev")
 var lightboxitem=document.getElementById("lightboxitem")
+var currentIndex=0   // zero is an intialization value 
+
 
 for (var i=0;i<imgs.length;i++)
 
@@ -14,16 +18,11 @@ for (var i=0;i<imgs.length;i++)
     imgs[i].addEventListener("click",function(e){
        
        lightboxcontainer.style.display="flex";
-       var imgSrc=e.target.src;          // كان ممكن من الاول نحط e.target.src بس احنا ساوينها ب imgSrc
-
-
+       currentIndex = imgs.indexOf(e.target);  // currentIndex here شايل الصوره اللي عليها الدور في الظهور
+       var imgSrc=e.target.src;         
        lightboxitem.style.backgroundImage=`URL(${imgSrc})`
-       
 
     })
-
-
-
 }
 
 closeicon.addEventListener("click",function(){
@@ -31,50 +30,33 @@ closeicon.addEventListener("click",function(){
 lightboxcontainer.style.display="none"
 
 })
- 
 
+nexticon.addEventListener("click", getNextSlide)
 
-
-
-
-var myHttp = new XMLHttpRequest();
-var allMovies ;
-
-myHttp.open("GET","https://api.themoviedb.org/3/trending/movie/day?api_key=4aff823a7ed7c1ac78cb54bc6d268b77");
-myHttp.send();
-
-myHttp.addEventListener("readystatechange",function(){
-
-if(myHttp.readyState == 4 && myHttp.status == 200 )
+function getNextSlide()
 {
-    allMovies = JSON.parse(myHttp.response);
-    console.log(myHttp.response);
-    displayMovies();
+     currentIndex++;
+     if (currentIndex == imgs.length)
+     {
+         currentIndex = 0
+     }
+     var imgSrc = imgs[currentIndex].src ;
+     lightboxitem.style.backgroundImage=`URL(${imgSrc})`
+     
+
 }
 
-})
+previcon.addEventListener("click", getPrevSlide)
 
-
-function displayMovies(){
-var cartona = ``;
-for (var i=0; i < allMovies.length; i++)
+function getPrevSlide()
 {
-    cartona +=
-    `
-    <div class="col-md-3">
-    <h3>Lorem, ipsum dolor.</h3>
-    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta, quibusdam.</p>
-</div>
-    `;
-}
-
-   document.getElementById("rowData").innerHTML = cartona;
-}
-
-
-
-function  welcome(username="defult", Age=27, salary=4555 )
+currentIndex--;
+if (currentIndex<0)
 {
-    alert(`welcome ${username} ur Age is ${Age} ur salary is ${salary}`)
+currentIndex=imgs.length-1
 }
-welcome("ahmad",255555,545)
+var imgSrc = imgs[currentIndex].src ;
+     lightboxitem.style.backgroundImage=`URL(${imgSrc})`
+
+}
+
