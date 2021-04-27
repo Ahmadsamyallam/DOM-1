@@ -25,11 +25,12 @@ for (var i=0;i<imgs.length;i++)
     })
 }
 
-closeicon.addEventListener("click",function(){
+closeicon.addEventListener("click",closeslider)
+function closeslider()
+{
+    lightboxcontainer.style.display="none"
 
-lightboxcontainer.style.display="none"
-
-})
+}
 
 nexticon.addEventListener("click", getNextSlide)
 
@@ -60,3 +61,18 @@ var imgSrc = imgs[currentIndex].src ;
 
 }
 
+document.addEventListener("keydown",function(e){
+   if(e.keyCode==27)
+   {
+    closeslider()
+   }
+   else if (e.keyCode==39)
+   {
+    getNextSlide()
+   }
+   else if (e.keyCode==37)
+   {
+    getPrevSlide()
+   }
+
+})
