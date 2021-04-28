@@ -1,78 +1,38 @@
 
 
 
+var httpRequest = new XMLHttpRequest();   // new بتعمل نسخه جديده من ال xmlhttprequest
+var posts=[];
+
+httpRequest.open("GET","https://jsonplaceholder.typicode.com/photos")
+httpRequest.send();
 
 
-var imgs=Array.from(document.querySelectorAll(".w-100"))
-var lightboxcontainer=document.getElementById("lightboxcontainer")
-var closeicon=document.getElementById("close")
-var nexticon=document.getElementById("next")
-var previcon=document.getElementById("prev")
-var lightboxitem=document.getElementById("lightboxitem")
-var currentIndex=0   // zero is an intialization value 
 
+httpRequest.addEventListener("readystatechange",function(){
+    if (httpRequest.readyState == 4 && httpRequest.status == 200)
+    {
+       posts = JSON.parse(httpRequest.response);  
+       displayPosts()
 
-for (var i=0;i<imgs.length;i++)
-
-{
-    imgs[i].addEventListener("click",function(e){
-       
-       lightboxcontainer.style.display="flex";
-       currentIndex = imgs.indexOf(e.target);  // currentIndex here شايل الصوره اللي عليها الدور في الظهور
-       var imgSrc=e.target.src;         
-       lightboxitem.style.backgroundImage=`URL(${imgSrc})`
-
-    })
-}
-
-closeicon.addEventListener("click",closeslider)
-function closeslider()
-{
-    lightboxcontainer.style.display="none"
-
-}
-
-nexticon.addEventListener("click", getNextSlide)
-
-function getNextSlide()
-{
-     currentIndex++;
-     if (currentIndex == imgs.length)
-     {
-         currentIndex = 0
-     }
-     var imgSrc = imgs[currentIndex].src ;
-     lightboxitem.style.backgroundImage=`URL(${imgSrc})`
-     
-
-}
-
-previcon.addEventListener("click", getPrevSlide)
-
-function getPrevSlide()
-{
-currentIndex--;
-if (currentIndex<0)
-{
-currentIndex=imgs.length-1
-}
-var imgSrc = imgs[currentIndex].src ;
-     lightboxitem.style.backgroundImage=`URL(${imgSrc})`
-
-}
-
-document.addEventListener("keydown",function(e){
-   if(e.keyCode==27)
-   {
-    closeslider()
-   }
-   else if (e.keyCode==39)
-   {
-    getNextSlide()
-   }
-   else if (e.keyCode==37)
-   {
-    getPrevSlide()
-   }
-
+    }
 })
+
+
+function displayPosts()
+{
+    var postsContainer = ``;
+    for ( var i=0 ;i<posts.length; i++)
+    {
+        postsContainer+= 
+        `<div class="col-md-3">
+        <div>
+            <img src="${posts[i].url}" class="w-100">
+            <h1>${posts[i].id}</h1>
+            <h3>${posts[i].title}</h3>
+            <p>${posts[i].body}</p>
+        </div>
+        </div>`
+    }
+    document.getElementById("postsRow").innerHTML = postsContainer
+}
